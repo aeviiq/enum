@@ -1,0 +1,33 @@
+{
+    "name": "aeviiq/enum",
+    "type": "library",
+    "description": "Enum Component",
+    "keywords": [
+        "enum",
+        "php-enum",
+        "flags",
+        "bitwise"
+    ],
+    "homepage": "https://github.com/aeviiq/enum",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aeviiq Enum contributors",
+            "homepage": "https://github.com/aeviiq/enum/graphs/contributors"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Aeviiq\\Enum\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aeviiq\\Tests\\Enum\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "myclabs/php-enum": "^1.7"
+    }
+}
