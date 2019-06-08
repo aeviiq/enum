@@ -29,8 +29,7 @@ abstract class Flag extends Enum
     public function contains(Flag $flag): bool
     {
         if (!($flag instanceof $this)) {
-            throw new InvalidArgumentException(\sprintf('Argument 1 passed to %s() must be an instance of %s, %s given.', __METHOD__, static::class,
-                \get_class($flag)));
+            throw new InvalidArgumentException(\sprintf('Argument 1 passed to %s() must be an instance of %s, %s given.', __METHOD__, static::class, \get_class($flag)));
         }
 
         return ($flag->getValue() & $this->getValue()) === $flag->getValue();
