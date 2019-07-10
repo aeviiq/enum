@@ -12,7 +12,7 @@ composer require aeviiq/enum
 
 ## Declaration
 ```php
-final class Foo extends Flag
+final class Foo extends AbstractFlag
 {
     public const BAR = 1;
     public const BAZ = 2;
