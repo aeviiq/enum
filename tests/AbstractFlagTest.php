@@ -2,13 +2,13 @@
 
 namespace Aeviiq\Tests\Enum;
 
-use Aeviiq\Enum\Flag;
+use Aeviiq\Enum\AbstractFlag;
 use PHPUnit\Framework\TestCase;
 
-final class FlagTest extends TestCase
+final class AbstractFlagTest extends TestCase
 {
     /**
-     * @var object|Flag
+     * @var object|AbstractFlag
      */
     private $subject;
 
@@ -87,7 +87,7 @@ final class FlagTest extends TestCase
 
     private function createSubject($flag): object
     {
-        return new class($flag) extends Flag
+        return new class($flag) extends AbstractFlag
         {
             public const FLAG_1 = 1;
             public const FLAG_2 = 2;

@@ -2,6 +2,6 @@
 
 namespace Aeviiq\Enum\Exception;
 
-interface Exception extends \Throwable
+interface ExceptionInterface extends \Throwable
 {
 }

@@ -5,7 +5,7 @@ namespace Aeviiq\Enum;
 use Aeviiq\Enum\Exception\InvalidArgumentException;
 use MyCLabs\Enum\Enum;
 
-abstract class Flag extends Enum
+abstract class AbstractFlag extends Enum
 {
     /**
      * @var int[]
@@ -26,7 +26,7 @@ abstract class Flag extends Enum
         return \is_int($value) ? ($value & static::$flags[static::class]) === $value : false;
     }
 
-    public function contains(Flag $flag): bool
+    public function contains(AbstractFlag $flag): bool
     {
         if (!($flag instanceof $this)) {
             throw new InvalidArgumentException(\sprintf('Argument 1 passed to %s() must be an instance of %s, %s given.', __METHOD__, static::class, \get_class($flag)));
