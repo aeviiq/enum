@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Aeviiq\Tests\Enum;
+namespace Aeviiq\Enum\Tests;
 
 use Aeviiq\Enum\AbstractFlag;
 use PHPUnit\Framework\TestCase;

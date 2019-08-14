@@ -23,7 +23,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Aeviiq\\Tests\\Enum\\": "tests/"
+            "Aeviiq\\Enum\\Tests\\": "tests/"
         }
     },
     "require": {
