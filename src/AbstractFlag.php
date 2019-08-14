@@ -32,6 +32,11 @@ abstract class AbstractFlag extends Enum
             throw new InvalidArgumentException(\sprintf('Argument 1 passed to %s() must be an instance of %s, %s given.', __METHOD__, static::class, \get_class($flag)));
         }
 
-        return ($flag->getValue() & $this->getValue()) === $flag->getValue();
+        return $this->isFlagSet($this->getValue(), $flag->getValue());
+    }
+
+    protected function isFlagSet(int $flags, int $flag): bool
+    {
+        return ($flag & $flags) === $flag;
     }
 }
