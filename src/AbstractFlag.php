@@ -13,7 +13,7 @@ abstract class AbstractFlag
 
     /**
      * @var array
-     * @psalm-var array<class-string, array<string, mixed>>
+     * @psalm-var array<class-string, array<string, int>>
      */
     protected static $cache = [];
 
@@ -83,7 +83,7 @@ abstract class AbstractFlag
      */
     public static function values(): array
     {
-        return array_map(static function ($value) {
+        return \array_map(static function ($value) {
             return new static($value);
         }, static::toArray());
     }
