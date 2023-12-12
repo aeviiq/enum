@@ -2,8 +2,6 @@
 
 ## Why
 To provide a way to implement enum flags in PHP.
-This component is inspired by the https://github.com/myclabs/php-enum and the enum
-[Flags] options in other programming languages.
 
 ## Installation
 ```
@@ -28,5 +26,3 @@ $foo->contains(new Foo(Foo:BAZ)); // False
 $foo->contains(new Bar(Foo::BAR)); // InvalidArgumentException thrown
 $foo = new Foo(6); // UnexpectedValueException thrown
 ```
-
-More documentation can be found on https://github.com/myclabs/php-enum
