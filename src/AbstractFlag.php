@@ -1,16 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Aeviiq\Enum;
 
 use Aeviiq\Enum\Exception\InvalidArgumentException;
+use Aeviiq\Enum\Exception\UnexpectedValueException;
 
 abstract class AbstractFlag
 {
-    /**
-     * @var int
-     */
-    protected $value;
-
     /**
      * @var array
      * @psalm-var array<class-string, array<string, int>>
@@ -18,22 +16,59 @@ abstract class AbstractFlag
     protected static $cache = [];
 
     /**
-     * @var array<int>
+     * @var array<string, int>
      */
     protected static $flags = [];
 
     /**
      * @throws \ReflectionException
      */
-    public function __construct(int $value)
+    final public function __construct(private readonly int $value)
     {
         static::$flags[static::class] = \array_sum(static::toArray());
 
         if (!static::isValid($value)) {
-            throw new \UnexpectedValueException(sprintf('Value \'%s\' is not part of the enum %s', $value, static::class));
+            throw new UnexpectedValueException(sprintf('Value \'%s\' is not part of the enum %s', $value, static::class));
+        }
+    }
+
+    /**
+     * @return array<string, static>
+     */
+    public static function values(): array
+    {
+        return \array_map(static function ($value) {
+            return new static($value);
+        }, static::toArray());
+    }
+
+    /**
+     * @return array<string, int>
+     *
+     * @throws \ReflectionException
+     */
+    public static function toArray(): array
+    {
+        $class = static::class;
+        if (!isset(static::$cache[$class])) {
+            $reflection = new \ReflectionClass($class);
+            $flags = $reflection->getConstants();
+            foreach ($flags as $flagId => $flag) {
+                if (!\is_int($flag)) {
+                    throw new UnexpectedValueException(\sprintf('Flags must be integers but "%s" is of type "%s"', $flagId, gettype($flag)));
+                }
+            }
+
+            /** @var array<string, int> $flags */
+            static::$cache[$class] = $flags;
         }
 
-        $this->value = $value;
+        return static::$cache[$class];
+    }
+
+    public static function isValid(int $value): bool
+    {
+        return ($value & static::$flags[static::class]) === $value;
     }
 
     public function getValue(): int
@@ -76,37 +111,5 @@ abstract class AbstractFlag
     final public function equals(AbstractFlag $variable): bool
     {
         return $this->getValue() === $variable->getValue() && static::class === \get_class($variable);
-    }
-
-    /**
-     * @return array<string, static>
-     */
-    public static function values(): array
-    {
-        return \array_map(static function ($value) {
-            return new static($value);
-        }, static::toArray());
-    }
-
-    /**
-     * @return array<string, int>
-     *
-     * @throws \ReflectionException
-     */
-    public static function toArray(): array
-    {
-        $class = static::class;
-
-        if (!isset(static::$cache[$class])) {
-            $reflection = new \ReflectionClass($class);
-            static::$cache[$class] = $reflection->getConstants();
-        }
-
-        return static::$cache[$class];
-    }
-
-    public static function isValid(int $value): bool
-    {
-        return ($value & static::$flags[static::class]) === $value;
     }
 }
