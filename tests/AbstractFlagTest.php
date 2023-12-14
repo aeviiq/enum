@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 final class AbstractFlagTest extends TestCase
 {
+    /**
+     * @return array<int, array<int>>
+     */
     public static function constructorThrowsExceptionOnInvalidValueDataProvider(): array
     {
         return [
@@ -20,6 +23,9 @@ final class AbstractFlagTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<int, array<int>>
+     */
     public static function constructorAllowsValidValuesAndCombinedBitValuesDataProvider(): array
     {
         return [
@@ -31,16 +37,22 @@ final class AbstractFlagTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array<int, int|bool>>
+     */
     public static function isValidSupportsCombinedBitValuesDataProvider(): array
     {
         return [
-            'Test with defined value' => [1, true,],
+            'Test with defined value' => [1, true],
             'Test with combined bit value' => [3, true],
             'Test with missing value' => [4, false],
             'Test with invalid combined bit value' => [5, false],
         ];
     }
 
+    /**
+     * @return array<string, array<int, array<int, int>|int>>
+     */
     public static function explodeDataProvider(): array
     {
         return [
@@ -50,6 +62,9 @@ final class AbstractFlagTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<string, array<int, int>>
+     */
     public static function countDataProvider(): array
     {
         return [
@@ -62,7 +77,7 @@ final class AbstractFlagTest extends TestCase
     /**
      * @dataProvider constructorThrowsExceptionOnInvalidValueDataProvider
      */
-    public function testConstructorThrowsExceptionOnInvalidValue($value): void
+    public function testConstructorThrowsExceptionOnInvalidValue(int $value): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->createSubject($value);
@@ -71,7 +86,7 @@ final class AbstractFlagTest extends TestCase
     /**
      * @dataProvider constructorAllowsValidValuesAndCombinedBitValuesDataProvider
      */
-    public function testConstructorAllowsValidValuesAndCombinedBitValues($value): void
+    public function testConstructorAllowsValidValuesAndCombinedBitValues(int $value): void
     {
         $subject = $this->createSubject($value);
         static::assertEquals($value, $subject->getValue());
@@ -81,7 +96,7 @@ final class AbstractFlagTest extends TestCase
     /**
      * @dataProvider isValidSupportsCombinedBitValuesDataProvider
      */
-    public function testIsValidSupportsCombinedBitValues($value, bool $expected): void
+    public function testIsValidSupportsCombinedBitValues(int $value, bool $expected): void
     {
         $subject = $this->createSubject(1);
         $result = $subject::isValid($value);
@@ -99,8 +114,9 @@ final class AbstractFlagTest extends TestCase
 
     /**
      * @dataProvider explodeDataProvider
+     * @param array<int, int> $expected
      */
-    public function testExplode($value, array $expected): void
+    public function testExplode(int $value, array $expected): void
     {
         $subject = $this->createSubject($value);
         self::assertEquals($subject->explode(), $expected);
@@ -115,7 +131,7 @@ final class AbstractFlagTest extends TestCase
         self::assertEquals($subject->count(), $expectedCount);
     }
 
-    private function createSubject($flag): object
+    private function createSubject(int $flag): AbstractFlag
     {
         return new class($flag) extends AbstractFlag
         {

@@ -13,12 +13,12 @@ abstract class AbstractFlag
      * @var array
      * @psalm-var array<class-string, array<string, int>>
      */
-    private static $cache = [];
+    protected static $cache = [];
 
     /**
-     * @var array<int>
+     * @var array<string, int>
      */
-    private static $flags = [];
+    protected static $flags = [];
 
     /**
      * @throws \ReflectionException
@@ -52,7 +52,15 @@ abstract class AbstractFlag
         $class = static::class;
         if (!isset(static::$cache[$class])) {
             $reflection = new \ReflectionClass($class);
-            static::$cache[$class] = $reflection->getConstants();
+            $flags = $reflection->getConstants();
+            foreach ($flags as $flagId => $flag) {
+                if (!\is_int($flag)) {
+                    throw new UnexpectedValueException(\sprintf('Flags must be integers but "%s" is of type "%s"', $flagId, gettype($flag)));
+                }
+            }
+
+            /** @var array<string, int> $flags */
+            static::$cache[$class] = $flags;
         }
 
         return static::$cache[$class];
